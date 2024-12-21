@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{%block title%}login{%endblock%}
+
+{%block content%}
+{% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+<div class="container" style="width: 50%;">
+<form method="post">
+    {% csrf_token %}
+  <div class="form-group">
+    <label for="username">username</label>
+    <input type="username" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Enter username">
+  </div>
+  <div class="form-group ">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+  </div>
+  
+  <button type="submit" class="btn btn-primary mt-4">Submit</button>
+  
+</form>
+<a href="{% url 'signup'%}" class="text-underline text-blue-500 hover:text-blue-600 hover:underline">?already have an account signup</a>
+</div>
+{%endblock%}

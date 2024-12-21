@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock and Sold Products Report</title>
+    <style>
+            body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .total-row {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>Stock and Sold Products Report Of XY Stock</h2>
+
+    <h3>Products in Stock</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date Added</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in stock %}
+            <tr>
+                <td>{{ product.added_at }}</td>
+                <td>{{ product.product_id.product_name }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>${{ product.unit_price }}</td>
+                <td>${{ product.total_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Sold Products</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date Sold</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in sold %}
+            <tr>
+                <td>{{ product.added_at }}</td>
+                <td>{{ product.product_id.product_name }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>${{ product.unit_price }}</td>
+                <td>${{ product.total_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

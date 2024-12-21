@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{%block title%}add Product{%endblock%}
+
+{%block content%}
+{% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+<div class="container" style="width: 50%;">
+<form method="post" action={%url 'add_product'%}>
+    {% csrf_token %}
+  <div class="form-group">
+    <label for="product_name">Product_Name</label>
+    <input type="product_name" class="form-control" id="product_name" name="product_name" aria-describedby="product_name" placeholder="Enter a product">
+  </div>  
+  <button type="submit" class="btn btn-primary mt-4">ADD Product</button>
+  
+</form>
+</div>
+{%endblock%}

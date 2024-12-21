@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Recent Activity</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+                {% comment %} <th>Action</th> {% endcomment %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in sold %}
+            <tr>
+                <td>{{ product.added_at }}</td>
+                <td>{{ product.product_id.product_name }}</td>
+                <td>{{ product.unit_price }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.total_price }}</td>
+                {% comment %} <td>
+                    <button onclick="showModal('{{product.id}}','adding','{{product.quantity}}')"
+                        class="btn btn-sm btn-primary">+</button>
+                </td>
+                <td>
+                    <button onclick="showModal('{{product.id}}','removing','{{product.quantity}}')"
+                        class="btn btn-sm btn-danger">-</button>
+                </td> {% endcomment %}
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+    <div class="w-full my-10  flex flex-col  justify-center items-center">
+        RECORD SOLD PRODUCTS
+        <form class="w-96 shadow-md p-6 bg-gray-100" method="POST" action="{% url 'product_out' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="select-product">Select product</label>
+                <select name="product_id" class="form-control" id="select-product">
+                    {% for product in product_names%}
+                    <option value="{{product.id}}">{{product}}</option>
+                    {%endfor%}
+                </select>
+                <label for="product_name">Product_Name</label>
+                <input type="number" class="form-control" id="product_name" name="quantity"
+                    aria-describedby="product_name" placeholder="Enter the quantity">
+                <label for="unit_price">UnitPrice</label>
+                <input type="number" class="form-control mb-4" id="unit_price" name="unit_price"
+                    aria-describedby="unit_price" placeholder="Enter the unit_price">
+                <label for="added_at">addedAt</label>
+                <input type="date" class="form-control mb-4" id="added_at" name="added_at"
+                    aria-describedby="added_at" placeholder="Enter the added time of the product">
+                <button class="btn btn-primary" name="submit">ADD</button>
+            </div>
+        </form>
+    </div>
+    <div id="modal" style="display:none" class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50">
+        <div class="bg-white p-4 rounded shadow" style="width: 300px; margin: 100px auto;">
+            <form method="POST" action="{% url 'stock' %}">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" id="productId">
+                <input type="hidden" name="action" id="action">
+                <div class="mb-3">
+                    <label>Quantity</label>
+                    <input type="number" name="quantity" id="quantity" class="form-control" min="1" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+                <button type="button" onclick="hideModal()" class="btn btn-secondary">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showModal(productId, action, quantity) {
+        document.getElementById('modal').style.display = 'block';
+        if (action == 'adding') {
+            document.getElementById('productId').value = productId;
+        } else if (action == "removing") {
+            document.getElementById('action').value = 'remove';
+            document.getElementById('productId').value = productId;
+        }
+    }
+
+    function hideModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+</script>
+{% endblock %}
